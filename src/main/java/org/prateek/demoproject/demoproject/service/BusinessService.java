@@ -10,6 +10,31 @@ import org.prateek.demoproject.demoproject.model.Movie;
 
 public class BusinessService {
 
+
+	public List<Business> getTop5Businesses(String city,String category,int review_count) throws SQLException{
+		DriverManager.registerDriver(new oracle.jdbc.driver.OracleDriver());
+		Connection conn = DriverManager.getConnection ("jdbc:oracle:thin:@oracle.cise.ufl.edu:1521:orcl","ntiware", "nikhil123");
+		 Statement stmt = conn.createStatement ();
+
+
+		 ResultSet rset = stmt.executeQuery ("select name,business_id,stars from(select name,business_id,stars from sharshar.BUSINESS where city='"+city+"' and CATEGORIES  like '%"+category+"%' and REVIEW_COUNT >"+review_count+" order by stars desc)where rownum <11 ");
+		 List<Business> businessList=new ArrayList<Business>();
+		 if(!rset.next()){
+
+			  rset = stmt.executeQuery ("select name,business_id,stars from(select name,business_id,stars from sharshar.BUSINESS where city='"+city+"' and CATEGORIES  like '%"+category+"%' order by stars desc)where rownum <11 ");
+		 }
+		 while (rset.next ()){
+
+			 Business business=new Business(rset.getString("NAME"),rset.getString("BUSINESS_ID"),Float.parseFloat(rset.getString("STARS")));
+			 businessList.add(business);
+
+		 }
+
+
+		 conn.close(); // ** IMPORTANT : Close connections when done **}
+		return businessList;
+
+	}
 	public List<Business> getAllBusinesses(int num) throws SQLException{
 
 		DriverManager.registerDriver(new oracle.jdbc.driver.OracleDriver());

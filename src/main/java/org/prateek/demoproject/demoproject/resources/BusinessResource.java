@@ -22,8 +22,14 @@ public class BusinessResource {
 
 	@GET
 	@Path("/{num}")
-	public List<Business> getMovies(@PathParam("num")int num) throws SQLException{
+	public List<Business> getBuisnesses(@PathParam("num")int num) throws SQLException{
 		return businessService.getAllBusinesses(num);
+	}
+
+	@GET
+	@Path("/{city}/{category}/{review_count}")  //String city,String category,int review_count
+	public List<Business> getTop5Buisnesses(@PathParam("city")String city,@PathParam("category")String category,@PathParam("review_count") int review_count) throws SQLException{
+		return businessService.getTop5Businesses(city,category,review_count);
 	}
 
 }

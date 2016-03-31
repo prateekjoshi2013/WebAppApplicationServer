@@ -104,7 +104,14 @@ public class Business {
 	String ATTRIBUTES_MUSIC_JUKEBOX	;//VARCHAR2(26 BYTE)
 	String ATTRIBUTES_AMBIENCE_UPSCALE;	//VARCHAR2(26 BYTE)
 
-	public Business(){};
+	public Business(){}
+	public Business(String nAME,String bUSINESS_ID ,float sTARS)
+					{
+					super();
+					NAME=nAME;
+					STARS = sTARS;
+					BUSINESS_ID = bUSINESS_ID;
+					}
 	public Business(String aTTRIBUTES_AMBIENCE_DIVEY, String aTTRIBUTES_DIETARY_VEGAN, String aTTRIBUTES_HAPPY_HOUR,
 			String hOURS_THURSDAY_OPEN, String aTTRIBUTES_ORDER_AT_COUNTER, String aTTRIBUTES_HAIR_AFROAMERICAN,
 			String aTTRIBUTES_HAIR_KIDS, String aTTRIBUTES_BYOB, String hOURS_FRIDAY_OPEN,
