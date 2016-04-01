@@ -160,7 +160,9 @@ public class BusinessService {
 			      DriverManager.getConnection ("jdbc:oracle:thin:@oracle.cise.ufl.edu:1521:orcl","ntiware", "nikhil123");
 		 Statement stmt = conn.createStatement ();
 		 ResultSet rset = stmt.executeQuery ("select * from sharshar.BUSINESS where BUSINESS_ID='"+businessId+"'");
-		 return createBusinessObj(rset);
+		 Business result = createBusinessObj(rset);
+		 conn.close(); // ** IMPORTANT : Close connections when done **}
+		 return result;
 		
 	}
 	
