@@ -17,11 +17,11 @@ public class BusinessService {
 		 Statement stmt = conn.createStatement ();
 
 
-		 ResultSet rset = stmt.executeQuery ("select name,business_id,stars from(select name,business_id,stars from sharshar.BUSINESS where city='"+city+"' and CATEGORIES  like '%"+category+"%' and REVIEW_COUNT >"+review_count+" order by stars desc)where rownum <11 ");
+		 ResultSet rset = stmt.executeQuery ("select name,business_id,stars from(select name,business_id,stars from sharshar.BUSINESS where city='"+city+"' and CATEGORIES  like '%"+category+"%' and REVIEW_COUNT >"+review_count+" order by stars desc)where rownum <6 ");
 		 List<Business> businessList=new ArrayList<Business>();
 		 if(!rset.next()){
 
-			  rset = stmt.executeQuery ("select name,business_id,stars from(select name,business_id,stars from sharshar.BUSINESS where city='"+city+"' and CATEGORIES  like '%"+category+"%' order by stars desc)where rownum <11 ");
+			  rset = stmt.executeQuery ("select name,business_id,stars from(select name,business_id,stars from sharshar.BUSINESS where city='"+city+"' and CATEGORIES  like '%"+category+"%' order by stars desc)where rownum <6 ");
 		 }
 		 while (rset.next ()){
 
@@ -161,9 +161,9 @@ public class BusinessService {
 		 Statement stmt = conn.createStatement ();
 		 ResultSet rset = stmt.executeQuery ("select * from sharshar.BUSINESS where BUSINESS_ID='"+businessId+"'");
 		 return createBusinessObj(rset);
-		
+
 	}
-	
+
 	public Business createBusinessObj(ResultSet rset) throws SQLException{
 		Business business = null;
 		while (rset.next ()){
