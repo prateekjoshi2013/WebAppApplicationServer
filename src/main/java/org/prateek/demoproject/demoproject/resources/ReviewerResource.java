@@ -24,6 +24,8 @@ public class ReviewerResource {
 	@Path("/{reviewerId}")
 	public Reviewer getReviewer(@PathParam("reviewerId")String reviewerID) throws SQLException{
 		return reviewerService.getReviewer(reviewerID);
+
+
 	}
 
 
