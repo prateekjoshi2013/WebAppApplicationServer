@@ -9,7 +9,9 @@ import javax.ws.rs.core.MediaType;
 
 
 import org.prateek.demoproject.demoproject.model.Business;
+import org.prateek.demoproject.demoproject.model.BusinessReview;
 import org.prateek.demoproject.demoproject.model.Movie;
+import org.prateek.demoproject.demoproject.service.BusinessReviewService;
 import org.prateek.demoproject.demoproject.service.BusinessService;
 import org.prateek.demoproject.demoproject.service.MovieService;
 
@@ -19,6 +21,7 @@ import org.prateek.demoproject.demoproject.service.MovieService;
 public class BusinessResource {
 
 	BusinessService businessService=new BusinessService();
+	BusinessReviewService businessReviewService = new BusinessReviewService();
 
 	@GET
 	@Path("/getAll/{num}")
@@ -37,5 +40,12 @@ public class BusinessResource {
 	public Business getBusiness(@PathParam("businessId")String businessId) throws SQLException{
 		return businessService.getBusiness(businessId);
 	}
+	
+	@GET
+	@Path("/{businessId}/reviews")
+	public List<BusinessReview> getBusinessReviews(@PathParam("businessId")String businessId) throws SQLException{
+		return businessReviewService.getBusinessReviews(businessId);
+	}
+	
 	
 }
