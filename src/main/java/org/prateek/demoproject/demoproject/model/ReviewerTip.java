@@ -7,21 +7,27 @@ import javax.xml.bind.annotation.XmlRootElement;
 @XmlRootElement
 public class ReviewerTip {
 
+	//a.business_id,a.name,a.stars,a.review_count,b.text,b.likes,b.tip_date
 
 	String BUSINESS_ID;
 	String NAME;
-	String TEXT;
 	float STARS;
+	int REVIEW_COUNT;
+	String TEXT;
+	int LIKES;
 	Date TIP_DATE;
 	
 	public ReviewerTip(){}
 
-	public ReviewerTip(String bUSINESS_ID, String nAME, String tEXT, float sTARS, Date tIP_DATE) {
+	public ReviewerTip(String bUSINESS_ID, String nAME, float sTARS, int rEVIEW_COUNT, String tEXT, int lIKES,
+			Date tIP_DATE) {
 		super();
 		BUSINESS_ID = bUSINESS_ID;
 		NAME = nAME;
-		TEXT = tEXT;
 		STARS = sTARS;
+		REVIEW_COUNT = rEVIEW_COUNT;
+		TEXT = tEXT;
+		LIKES = lIKES;
 		TIP_DATE = tIP_DATE;
 	}
 
@@ -41,6 +47,22 @@ public class ReviewerTip {
 		NAME = nAME;
 	}
 
+	public float getSTARS() {
+		return STARS;
+	}
+
+	public void setSTARS(float sTARS) {
+		STARS = sTARS;
+	}
+
+	public int getREVIEW_COUNT() {
+		return REVIEW_COUNT;
+	}
+
+	public void setREVIEW_COUNT(int rEVIEW_COUNT) {
+		REVIEW_COUNT = rEVIEW_COUNT;
+	}
+
 	public String getTEXT() {
 		return TEXT;
 	}
@@ -49,12 +71,12 @@ public class ReviewerTip {
 		TEXT = tEXT;
 	}
 
-	public float getSTARS() {
-		return STARS;
+	public int getLIKES() {
+		return LIKES;
 	}
 
-	public void setSTARS(float sTARS) {
-		STARS = sTARS;
+	public void setLIKES(int lIKES) {
+		LIKES = lIKES;
 	}
 
 	public Date getTIP_DATE() {
@@ -64,6 +86,8 @@ public class ReviewerTip {
 	public void setTIP_DATE(Date tIP_DATE) {
 		TIP_DATE = tIP_DATE;
 	}
+
+	
 	
 	
 }
