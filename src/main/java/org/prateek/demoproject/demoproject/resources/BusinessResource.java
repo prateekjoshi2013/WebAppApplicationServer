@@ -9,6 +9,7 @@ import javax.ws.rs.core.MediaType;
 
 
 import org.prateek.demoproject.demoproject.model.Business;
+import org.prateek.demoproject.demoproject.model.BusinessMonthlyTrends;
 import org.prateek.demoproject.demoproject.model.BusinessReview;
 import org.prateek.demoproject.demoproject.model.Movie;
 import org.prateek.demoproject.demoproject.service.BusinessReviewService;
@@ -47,5 +48,10 @@ public class BusinessResource {
 		return businessReviewService.getBusinessReviews(businessId);
 	}
 	
+	@GET
+	@Path("/{businessId}/monthly_trends")
+	public List<BusinessMonthlyTrends> getBusinessMonthlyTrends(@PathParam("businessId")String businessId) throws SQLException{
+		return businessService.getBusinessMonthlyTrends(businessId);
+	}
 	
 }

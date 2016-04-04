@@ -6,6 +6,8 @@ import java.sql.*;
 import java.text.SimpleDateFormat;
 
 import org.prateek.demoproject.demoproject.model.Business;
+import org.prateek.demoproject.demoproject.model.BusinessMonthlyTrends;
+import org.prateek.demoproject.demoproject.model.BusinessReview;
 import org.prateek.demoproject.demoproject.model.Movie;
 
 public class BusinessService {
@@ -165,6 +167,33 @@ public class BusinessService {
 		 return result;
 
 		
+	}
+	
+	public List<BusinessMonthlyTrends> getBusinessMonthlyTrends(String businessId) throws SQLException{
+		DriverManager.registerDriver(new oracle.jdbc.driver.OracleDriver());
+		Connection conn =
+			      DriverManager.getConnection ("jdbc:oracle:thin:@oracle.cise.ufl.edu:1521:orcl","ntiware", "nikhil123");
+		 Statement stmt = conn.createStatement ();
+		 ResultSet rset = stmt.executeQuery ("select a.business_id,to_char(a.REVIEW_DATE,'MM-YY') as month,to_char(a.REVIEW_DATE,'YY') as year,avg(a.stars) as stars from aravi.reviews a where a.business_id='"+businessId+"' group by a.business_id,to_char(a.REVIEW_DATE,'MM-YY'),to_char(a.REVIEW_DATE,'YY') ORDER BY to_char(a.REVIEW_DATE,'YY')");
+		 
+		 List<BusinessMonthlyTrends> monthlyTrendsList = new ArrayList<BusinessMonthlyTrends>();
+		 //List<BusinessReview> businessReviewList=new ArrayList<BusinessReview>();
+
+		 while (rset.next ()){
+
+			 BusinessMonthlyTrends businessMonthlyTrend =new BusinessMonthlyTrends(
+					 rset.getString("BUSINESS_ID"),
+					 rset.getString("month"),
+					 rset.getString("year"),
+					 Float.parseFloat(rset.getString("stars"))
+					 );
+			 monthlyTrendsList.add(businessMonthlyTrend);
+
+
+		 }
+		 conn.close();
+		 //System.out.println(businessMonthlyTrend.getBUSINESS_ID());
+		 return monthlyTrendsList;
 	}
 	
 	public Business createBusinessObj(ResultSet rset) throws SQLException{
