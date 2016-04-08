@@ -48,7 +48,7 @@ public class ReviewerReviewTipService {
 		 Statement stmt = conn.createStatement ();
 
 
-		 ResultSet rset = stmt.executeQuery ("select a.business_id,a.name,b.text,b.stars,b.REVIEW_DATE from sharshar.business a join ARAVI.REVIEWS b on a.business_id=b.business_id where b.user_id='"+userId+"'");
+		 ResultSet rset = stmt.executeQuery ("select a.business_id,a.name,a.stars,a.review_count,b.text,b.likes,b.tip_date from sharshar.business a join joshi.tip b on a.business_id=b.business_id where b.user_id='"+userId+"'");
 		 List<ReviewerTip> reviewerTipList=new ArrayList<ReviewerTip>();
 		 
 		 while (rset.next ()){
@@ -56,9 +56,11 @@ public class ReviewerReviewTipService {
 			 ReviewerTip reviewerTip=new ReviewerTip(
 					 rset.getString("BUSINESS_ID"),
 					 rset.getString("NAME"),
-					 rset.getString("TEXT"),
 					 Float.parseFloat(rset.getString("STARS")),
-					 rset.getDate("REVIEW_DATE")
+					 rset.getInt("REVIEW_COUNT"),
+					 rset.getString("TEXT"),
+					 rset.getInt("LIKES"),
+					 rset.getDate("TIP_DATE")
 					 );
 			 reviewerTipList.add(reviewerTip);
 
