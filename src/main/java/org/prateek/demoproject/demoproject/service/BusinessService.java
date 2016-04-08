@@ -12,6 +12,36 @@ import org.prateek.demoproject.demoproject.model.Movie;
 
 public class BusinessService {
 
+	public List<Business> getSearchQueryBusinesses(String searchCriteraString,String city,String category ) throws SQLException{
+		String queryPart="";
+		String stringParts[]=searchCriteraString.split(",");
+		for(String s:stringParts){
+			queryPart+=s+"='TRUE' and ";
+
+		}
+		System.out.println(queryPart.substring(0,queryPart.length()-4));
+String queryString="select business_id,name,stars from sharshar.business where  city='"+city+"' and CATEGORIES  like '%"+category+"%' and "+ queryPart.substring(0,queryPart.length()-4);
+System.out.println(queryString);
+		DriverManager.registerDriver(new oracle.jdbc.driver.OracleDriver());
+		Connection conn = DriverManager.getConnection ("jdbc:oracle:thin:@oracle.cise.ufl.edu:1521:orcl","ntiware", "nikhil123");
+		 Statement stmt = conn.createStatement ();
+
+
+		 ResultSet rset = stmt.executeQuery (queryString);
+		 List<Business> businessList=new ArrayList<Business>();
+
+		 while (rset.next ()){
+
+			 Business business=new Business(rset.getString("NAME"),rset.getString("BUSINESS_ID"),Float.parseFloat(rset.getString("STARS")));
+			 businessList.add(business);
+
+		 }
+
+
+		 conn.close(); // ** IMPORTANT : Close connections when done **}
+		return businessList;
+
+	}
 
 	public List<Business> getTop5Businesses(String city,String category,int review_count) throws SQLException{
 		DriverManager.registerDriver(new oracle.jdbc.driver.OracleDriver());
@@ -166,16 +196,16 @@ public class BusinessService {
 		 conn.close(); // ** IMPORTANT : Close connections when done **}
 		 return result;
 
-		
+
 	}
-	
+
 	public List<BusinessMonthlyTrends> getBusinessMonthlyTrends(String businessId) throws SQLException{
 		DriverManager.registerDriver(new oracle.jdbc.driver.OracleDriver());
 		Connection conn =
 			      DriverManager.getConnection ("jdbc:oracle:thin:@oracle.cise.ufl.edu:1521:orcl","ntiware", "nikhil123");
 		 Statement stmt = conn.createStatement ();
 		 ResultSet rset = stmt.executeQuery ("select a.business_id,to_char(a.REVIEW_DATE,'MM-YY') as month,to_char(a.REVIEW_DATE,'YY') as year,avg(a.stars) as stars from aravi.reviews a where a.business_id='"+businessId+"' group by a.business_id,to_char(a.REVIEW_DATE,'MM-YY'),to_char(a.REVIEW_DATE,'YY') ORDER BY to_char(a.REVIEW_DATE,'YY')");
-		 
+
 		 List<BusinessMonthlyTrends> monthlyTrendsList = new ArrayList<BusinessMonthlyTrends>();
 		 //List<BusinessReview> businessReviewList=new ArrayList<BusinessReview>();
 
@@ -195,7 +225,7 @@ public class BusinessService {
 		 //System.out.println(businessMonthlyTrend.getBUSINESS_ID());
 		 return monthlyTrendsList;
 	}
-	
+
 	public Business createBusinessObj(ResultSet rset) throws SQLException{
 		Business business = null;
 		while (rset.next ()){

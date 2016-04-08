@@ -9,9 +9,11 @@ import javax.ws.rs.core.MediaType;
 
 
 import org.prateek.demoproject.demoproject.model.Business;
+import org.prateek.demoproject.demoproject.model.BusinessAttributesList;
 import org.prateek.demoproject.demoproject.model.BusinessMonthlyTrends;
 import org.prateek.demoproject.demoproject.model.BusinessReview;
 import org.prateek.demoproject.demoproject.model.Movie;
+import org.prateek.demoproject.demoproject.service.BusinessAttributeListService;
 import org.prateek.demoproject.demoproject.service.BusinessReviewService;
 import org.prateek.demoproject.demoproject.service.BusinessService;
 import org.prateek.demoproject.demoproject.service.MovieService;
@@ -23,7 +25,7 @@ public class BusinessResource {
 
 	BusinessService businessService=new BusinessService();
 	BusinessReviewService businessReviewService = new BusinessReviewService();
-
+    BusinessAttributeListService businessAttributeServiceList=new BusinessAttributeListService();
 	@GET
 	@Path("/getAll/{num}")
 	public List<Business> getBuisnesses(@PathParam("num")int num) throws SQLException{
@@ -41,17 +43,30 @@ public class BusinessResource {
 	public Business getBusiness(@PathParam("businessId")String businessId) throws SQLException{
 		return businessService.getBusiness(businessId);
 	}
-	
+
 	@GET
 	@Path("/{businessId}/reviews")
 	public List<BusinessReview> getBusinessReviews(@PathParam("businessId")String businessId) throws SQLException{
 		return businessReviewService.getBusinessReviews(businessId);
 	}
-	
+
 	@GET
 	@Path("/{businessId}/monthly_trends")
 	public List<BusinessMonthlyTrends> getBusinessMonthlyTrends(@PathParam("businessId")String businessId) throws SQLException{
 		return businessService.getBusinessMonthlyTrends(businessId);
 	}
-	
+	@GET
+	@Path("/business_attributes")
+	public BusinessAttributesList getBusinessAttributeList() throws SQLException{
+
+		return businessAttributeServiceList.getBusinessAtrributeList();
+	}
+	@GET
+	@Path("/business_search/{city}/{category}")
+	public List<Business> getSearchQueryBusinesses(@QueryParam("searchParams")String searchParams,@PathParam("city") String city, @PathParam("category")String category) throws SQLException{
+//System.out.println(searchParams);
+		return businessService.getSearchQueryBusinesses(searchParams,city ,category);
+	}
+
+
 }
