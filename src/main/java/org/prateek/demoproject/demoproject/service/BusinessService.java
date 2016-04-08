@@ -47,9 +47,9 @@ System.out.println(queryString);
 		DriverManager.registerDriver(new oracle.jdbc.driver.OracleDriver());
 		Connection conn = DriverManager.getConnection ("jdbc:oracle:thin:@oracle.cise.ufl.edu:1521:orcl","ntiware", "nikhil123");
 		 Statement stmt = conn.createStatement ();
-
-
-		 ResultSet rset = stmt.executeQuery ("select name,business_id,stars from(select name,business_id,stars from sharshar.BUSINESS where city='"+city+"' and CATEGORIES  like '%"+category+"%' and REVIEW_COUNT >"+review_count+" order by stars desc)where rownum <6 ");
+		 //String oldQuery = "select name,business_id,stars from(select name,business_id,stars from sharshar.BUSINESS where city='"+city+"' and CATEGORIES  like '%"+category+"%' and REVIEW_COUNT >"+review_count+" order by stars desc)where rownum <6 ";
+		 String query = "select name,business_id,stars from sharshar.business where business_id in (select * from (select a.business_id as review_count from sharshar.business a join aravi.reviews b on a.business_id=b.business_id where a.categories like '%"+category+"%' AND city = '"+city+"' group by a.business_id,a.STARS order by a.stars desc) where ROWNUM<=6) order by stars desc";
+		 ResultSet rset = stmt.executeQuery (query);
 		 List<Business> businessList=new ArrayList<Business>();
 		 if(!rset.next()){
 
