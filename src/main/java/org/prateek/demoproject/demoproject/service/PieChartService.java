@@ -36,7 +36,7 @@ public class PieChartService {
 	
 }
 	
-	public ArrayList<DayPieChart>getHourPieChartData(String city,int day) throws SQLException{
+	public ArrayList<DayPieChart>getDayPieChartData(String city,int day) throws SQLException{
 		
 		ArrayList<DayPieChart> dayPieList=new ArrayList<DayPieChart>();
 		DriverManager.registerDriver(new oracle.jdbc.driver.OracleDriver());
