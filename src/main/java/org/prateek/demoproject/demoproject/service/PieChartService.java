@@ -25,7 +25,7 @@ public class PieChartService {
 			 
 			 ResultSet rset = stmt.executeQuery (queryString);
 			 while(rset.next()){
-				 hourPieList.add(new HourPieChart(categories[0],rset.getInt("hourCheckinCount")));
+				 hourPieList.add(new HourPieChart(categories[i],rset.getInt("hourCheckinCount")));
 				}
 		 }
 		 
@@ -34,4 +34,8 @@ public class PieChartService {
 		 //String queryString = "select sum(checkin_info_"+hour+"_"+day+") as hourCheckinCount from sharshar.business a join sharshar.check_in b on a.business_id=b.business_id where a.categories like '%"+category+"%' AND b.checkin_info_"+hour+"_"+day+" is not NULL AND a.city = '"+city+"'";
 	
 }
+	
+	
+	
+	
 }

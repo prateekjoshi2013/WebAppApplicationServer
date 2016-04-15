@@ -11,7 +11,9 @@ import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
 
 import org.prateek.demoproject.demoproject.model.DailyCheckinTrends;
+import org.prateek.demoproject.demoproject.model.HourPieChart;
 import org.prateek.demoproject.demoproject.model.ReviewTrend;
+import org.prateek.demoproject.demoproject.service.PieChartService;
 import org.prateek.demoproject.demoproject.service.TrendsService;
 
 @Path("/trends")
@@ -20,6 +22,7 @@ import org.prateek.demoproject.demoproject.service.TrendsService;
 public class TrendsResource {
 
 	TrendsService trendsService=new TrendsService();
+	PieChartService pieChartService = new PieChartService();
 
 	@GET
 	@Path("/monthly_trends/{city}/{category}")
@@ -30,6 +33,12 @@ public class TrendsResource {
 	@Path("/daily_checkin/{city}/{category}")
 	public ArrayList<DailyCheckinTrends> getDailyCheckinTrends(@PathParam("city")String city,@PathParam("category")String category) throws SQLException{
 		return trendsService.getDailyCheckinTrends(city,category);
+	}
+	
+	@GET
+	@Path("/houly_checkin/{city}/{day}/{hour}")
+	public ArrayList<HourPieChart> getHourPieChartData(@PathParam("city")String city,@PathParam("day")int day, @PathParam("hour")int hour) throws SQLException{
+		return pieChartService.getHourPieChartData(city,day,hour);
 	}
 
 }
