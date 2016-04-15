@@ -13,6 +13,7 @@ import javax.ws.rs.core.MediaType;
 import org.prateek.demoproject.demoproject.model.DailyCheckinTrends;
 import org.prateek.demoproject.demoproject.model.HourPieChart;
 import org.prateek.demoproject.demoproject.model.ReviewTrend;
+import org.prateek.demoproject.demoproject.model.WeeklyCheckinTrends;
 import org.prateek.demoproject.demoproject.service.PieChartService;
 import org.prateek.demoproject.demoproject.service.TrendsService;
 
@@ -34,11 +35,19 @@ public class TrendsResource {
 	public ArrayList<DailyCheckinTrends> getDailyCheckinTrends(@PathParam("city")String city,@PathParam("category")String category) throws SQLException{
 		return trendsService.getDailyCheckinTrends(city,category);
 	}
-	
+
 	@GET
 	@Path("/houly_checkin/{city}/{day}/{hour}")
 	public ArrayList<HourPieChart> getHourPieChartData(@PathParam("city")String city,@PathParam("day")int day, @PathParam("hour")int hour) throws SQLException{
 		return pieChartService.getHourPieChartData(city,day,hour);
 	}
+
+	@GET
+	@Path("/weekly_checkin/{city}/{category}")
+	public WeeklyCheckinTrends getWeeklyCheckinTrends(@PathParam("city")String city,@PathParam("category")String category) throws SQLException{
+		return trendsService.getWeeklyCheckinTrends(city,category);
+	}
+
+
 
 }
