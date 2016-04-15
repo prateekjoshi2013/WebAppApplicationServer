@@ -10,9 +10,8 @@ import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
 
-
+import org.prateek.demoproject.demoproject.model.DailyCheckinTrends;
 import org.prateek.demoproject.demoproject.model.ReviewTrend;
-
 import org.prateek.demoproject.demoproject.service.TrendsService;
 
 @Path("/trends")
@@ -27,6 +26,10 @@ public class TrendsResource {
 	public ArrayList<ReviewTrend> getReviewTrends(@PathParam("city")String city,@PathParam("category")String category) throws SQLException{
 		return trendsService.getReviewTrends(city,category);
 	}
-
+	@GET
+	@Path("/daily_checkin/{city}/{category}")
+	public ArrayList<DailyCheckinTrends> getDailyCheckinTrends(@PathParam("city")String city,@PathParam("category")String category) throws SQLException{
+		return trendsService.getDailyCheckinTrends(city,category);
+	}
 
 }
