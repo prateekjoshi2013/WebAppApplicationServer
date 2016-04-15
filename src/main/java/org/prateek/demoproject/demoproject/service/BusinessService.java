@@ -14,9 +14,55 @@ public class BusinessService {
 
 	public List<Business> getSearchQueryBusinesses(String searchCriteraString,String city,String category ) throws SQLException{
 		String queryPart="";
+		System.out.println(searchCriteraString);
 		String stringParts[]=searchCriteraString.split(",");
+
 		for(String s:stringParts){
-			queryPart+=s+"='TRUE' and ";
+			System.out.println(s);
+			if(s.startsWith("radio_attributes.noise"))
+			{
+				String spart[]=s.split("=");
+				if(spart.length>1){
+					queryPart+="ATTRIBUTES_NOISELEVEL = '"+spart[1]+"' and ";
+				}
+
+
+			}
+			else if(s.startsWith("radio_attributes.attire="))
+			{
+				String spart[]=s.split("=");
+				if(spart.length>1){
+					queryPart+="ATTRIBUTES_ATTIRE = '"+spart[1]+"' and ";
+				}
+
+			}
+			else if(s.startsWith("radio_attributes.price"))
+			{
+				String spart[]=s.split("=");
+				if(spart.length>1){
+					queryPart+="ATTRIBUTES_PRICERANGE = '"+spart[1]+"' and ";
+				}
+
+			}
+			else if(s.startsWith("radio_attributes.age"))
+			{
+				String spart[]=s.split("=");
+				if(spart.length>1){
+					queryPart+="ATTRIBUTES_AGESALLOWED = '"+spart[1]+"' and ";
+				}
+
+			}
+			else if(s.startsWith("radio_attributes.wifi"))
+			{
+				String spart[]=s.split("=");
+				if(spart.length>1){
+					queryPart+="ATTRIBUTES_WIFI = '"+spart[1]+"' and ";
+				}
+
+			}
+
+			else
+			{queryPart+=s+"='TRUE' and ";}
 
 		}
 		System.out.println(queryPart.substring(0,queryPart.length()-4));
