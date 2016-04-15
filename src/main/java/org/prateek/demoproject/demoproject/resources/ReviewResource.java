@@ -19,12 +19,12 @@ import org.prateek.demoproject.demoproject.service.ReviewService;
 public class ReviewResource {
 
 	//ReviewResource
-	ReviewService reviewResource=new ReviewService();
+	ReviewService reviewService=new ReviewService();
 
 	@GET
 	@Path("/{reviewId}")
 	public Review getBusiness(@PathParam("reviewId")String reviewId) throws SQLException{
-		return reviewResource.getReview(reviewId);
+		return reviewService.getReview(reviewId);
 	}
 
 
