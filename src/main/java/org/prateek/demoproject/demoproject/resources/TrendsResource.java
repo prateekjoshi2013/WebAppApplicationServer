@@ -10,6 +10,7 @@ import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
 
+import org.prateek.demoproject.demoproject.model.BusinessCategoryRatingDistribution;
 import org.prateek.demoproject.demoproject.model.DailyCheckinTrends;
 import org.prateek.demoproject.demoproject.model.DayPieChart;
 import org.prateek.demoproject.demoproject.model.HourPieChart;
@@ -54,6 +55,11 @@ public class TrendsResource {
 		return trendsService.getWeeklyCheckinTrends(city,category);
 	}
 
+	@GET
+	@Path("/rating_distribution/{city}/{category}/")
+	public ArrayList<BusinessCategoryRatingDistribution> getBusinessCategoryRatingDistribution(@PathParam("city")String city,@PathParam("category")String category) throws SQLException{
+		return trendsService.getBusinessCategoryRatingDistribution(city,category);
+	}
 
 
 }

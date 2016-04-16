@@ -7,11 +7,40 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
 
+import org.prateek.demoproject.demoproject.model.BusinessCategoryRatingDistribution;
 import org.prateek.demoproject.demoproject.model.DailyCheckinTrends;
 import org.prateek.demoproject.demoproject.model.ReviewTrend;
 import org.prateek.demoproject.demoproject.model.WeeklyCheckinTrends;
 
 public class TrendsService {
+
+	public ArrayList<BusinessCategoryRatingDistribution>getBusinessCategoryRatingDistribution(String city,String category) throws SQLException{
+
+		ArrayList<BusinessCategoryRatingDistribution> businessCategoryRatingDistributionList=new ArrayList();
+		DriverManager.registerDriver(new oracle.jdbc.driver.OracleDriver());
+		Connection conn =DriverManager.getConnection ("jdbc:oracle:thin:@oracle.cise.ufl.edu:1521:orcl","ntiware", "nikhil123");
+		Statement stmt = conn.createStatement ();
+		String queryString=" select stars,count(*) as count from sharshar.business "+
+				" where categories like '%"+category+"%' AND city = '"+city+"' " +
+				"group by stars";
+
+		System.out.println(queryString);
+		ResultSet rset = stmt.executeQuery (queryString);
+		while(rset.next()){
+			businessCategoryRatingDistributionList.add(new BusinessCategoryRatingDistribution(rset.getFloat(1), rset.getInt(2)));
+		}
+		conn.close();
+		return businessCategoryRatingDistributionList;
+
+
+
+	}
+
+
+
+
+
+
 
 
 	public ArrayList<ReviewTrend>getReviewTrends(String city,String category) throws SQLException{
