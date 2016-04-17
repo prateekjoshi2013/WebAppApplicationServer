@@ -5,34 +5,38 @@ import javax.xml.bind.annotation.XmlRootElement;
 @XmlRootElement
 public class BusinessCategoryRatingDistribution {
 
+
+	String CATEGORIES;
+	float STARS;
+
+
 	/**
 	 *
 	 */
 	public BusinessCategoryRatingDistribution() {
-		super();
 	}
-	float STARS;
 	/**
+	 * @param cATEGORIES
 	 * @param sTARS
-	 * @param cOUNT
 	 */
-	public BusinessCategoryRatingDistribution(float sTARS, int cOUNT) {
+	public BusinessCategoryRatingDistribution(String cATEGORIES, float sTARS) {
+		super();
+		CATEGORIES = cATEGORIES;
 		STARS = sTARS;
-		COUNT = cOUNT;
 	}
-	int COUNT;
+	public String getCATEGORIES() {
+		return CATEGORIES;
+	}
+	public void setCATEGORIES(String cATEGORIES) {
+		CATEGORIES = cATEGORIES;
+	}
 	public float getSTARS() {
 		return STARS;
 	}
 	public void setSTARS(float sTARS) {
 		STARS = sTARS;
 	}
-	public int getCOUNT() {
-		return COUNT;
-	}
-	public void setCOUNT(int cOUNT) {
-		COUNT = cOUNT;
-	}
+
 
 
 }

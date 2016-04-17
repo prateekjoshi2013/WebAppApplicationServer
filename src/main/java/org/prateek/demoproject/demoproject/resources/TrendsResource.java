@@ -39,7 +39,7 @@ public class TrendsResource {
 	}
 
 	@GET
-	@Path("/houly_checkin/{city}/{day}/{hour}")
+	@Path("/hourly_checkin/{city}/{day}/{hour}")
 	public ArrayList<HourPieChart> getHourPieChartData(@PathParam("city")String city,@PathParam("day")int day, @PathParam("hour")int hour) throws SQLException{
 		return pieChartService.getHourPieChartData(city,day,hour);
 	}
@@ -56,9 +56,9 @@ public class TrendsResource {
 	}
 
 	@GET
-	@Path("/rating_distribution/{city}/{category}/")
-	public ArrayList<BusinessCategoryRatingDistribution> getBusinessCategoryRatingDistribution(@PathParam("city")String city,@PathParam("category")String category) throws SQLException{
-		return trendsService.getBusinessCategoryRatingDistribution(city,category);
+	@Path("/rating_distribution/{city}")
+	public ArrayList<BusinessCategoryRatingDistribution> getBusinessCategoryRatingDistribution(@PathParam("city")String city) throws SQLException{
+		return trendsService.getBusinessCategoryRatingDistribution(city);
 	}
 
 

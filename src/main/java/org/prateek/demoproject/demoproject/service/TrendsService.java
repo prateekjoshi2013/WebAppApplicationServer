@@ -9,26 +9,29 @@ import java.util.ArrayList;
 
 import org.prateek.demoproject.demoproject.model.BusinessCategoryRatingDistribution;
 import org.prateek.demoproject.demoproject.model.DailyCheckinTrends;
+import org.prateek.demoproject.demoproject.model.HourPieChart;
 import org.prateek.demoproject.demoproject.model.ReviewTrend;
 import org.prateek.demoproject.demoproject.model.WeeklyCheckinTrends;
 
 public class TrendsService {
 
-	public ArrayList<BusinessCategoryRatingDistribution>getBusinessCategoryRatingDistribution(String city,String category) throws SQLException{
+	public ArrayList<BusinessCategoryRatingDistribution>getBusinessCategoryRatingDistribution(String city) throws SQLException{
 
 		ArrayList<BusinessCategoryRatingDistribution> businessCategoryRatingDistributionList=new ArrayList();
 		DriverManager.registerDriver(new oracle.jdbc.driver.OracleDriver());
 		Connection conn =DriverManager.getConnection ("jdbc:oracle:thin:@oracle.cise.ufl.edu:1521:orcl","ntiware", "nikhil123");
 		Statement stmt = conn.createStatement ();
-		String queryString=" select stars,count(*) as count from sharshar.business "+
-				" where categories like '%"+category+"%' AND city = '"+city+"' " +
-				"group by stars";
+		String[] categories ={"Food","Restaurants","Shopping","Active Life","Arts and Entertainment","Automotive","Beauty and Spas","Education","Event Planning and Services","Health and Medical","Home Services","Local Services"};
+		 for(int i=0; i<categories.length;i++){
+			 String queryString = "select avg(r.stars) as STARS from aravi.reviews r join  SHARSHAR.BUSINESS b on r.BUSINESS_ID = b.BUSINESS_ID where b.categories like '%"+categories[i]+"%'";
 
-		System.out.println(queryString);
-		ResultSet rset = stmt.executeQuery (queryString);
-		while(rset.next()){
-			businessCategoryRatingDistributionList.add(new BusinessCategoryRatingDistribution(rset.getFloat(1), rset.getInt(2)));
-		}
+			 ResultSet rset = stmt.executeQuery (queryString);
+			 System.out.println(queryString);
+			 while(rset.next()){
+				 businessCategoryRatingDistributionList.add(new BusinessCategoryRatingDistribution(categories[i], rset.getFloat(1)));
+				}
+		 }
+
 		conn.close();
 		return businessCategoryRatingDistributionList;
 
@@ -118,19 +121,19 @@ public class TrendsService {
 		while(rset.next()){
 			String days="";
 			if(day==0)
-				days="sunday";
+				days="Sunday";
 			else if(day==1)
-				days="monday";
+				days="Monday";
 			else if(day==2)
-				days="tuesday";
+				days="Tuesday";
 			else if(day==3)
-				days="wednesday";
+				days="Wednesday";
 			else if(day==4)
-				days="thursday";
+				days="Thursday";
 			else if(day==5)
-				days="friday";
+				days="Friday";
 			else if(day==6)
-				days="saturday";
+				days="Saturday";
 
 			dailyCheckinList.add(new DailyCheckinTrends(
 					rset.getFloat(1)
