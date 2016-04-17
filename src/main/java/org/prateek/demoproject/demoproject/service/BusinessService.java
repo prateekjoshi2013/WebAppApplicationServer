@@ -250,7 +250,7 @@ System.out.println(queryString);
 		Connection conn =
 			      DriverManager.getConnection ("jdbc:oracle:thin:@oracle.cise.ufl.edu:1521:orcl","ntiware", "nikhil123");
 		 Statement stmt = conn.createStatement ();
-		 ResultSet rset = stmt.executeQuery ("select a.business_id,to_char(a.REVIEW_DATE,'MM-YY') as month,to_char(a.REVIEW_DATE,'YY') as year,avg(a.stars) as stars from aravi.reviews a where a.business_id='"+businessId+"' group by a.business_id,to_char(a.REVIEW_DATE,'MM-YY'),to_char(a.REVIEW_DATE,'YY') ORDER BY to_char(a.REVIEW_DATE,'YY')");
+		 ResultSet rset = stmt.executeQuery ("select a.business_id,to_char(a.REVIEW_DATE,'YYYY-MM-DD') as month,to_char(a.REVIEW_DATE,'YY') as year,avg(a.stars) as stars from aravi.reviews a where a.business_id='"+businessId+"' group by a.business_id,to_char(a.REVIEW_DATE,'YYYY-MM-DD'),to_char(a.REVIEW_DATE,'YY') ORDER BY to_char(a.REVIEW_DATE,'YY')");
 
 		 List<BusinessMonthlyTrends> monthlyTrendsList = new ArrayList<BusinessMonthlyTrends>();
 		 //List<BusinessReview> businessReviewList=new ArrayList<BusinessReview>();
