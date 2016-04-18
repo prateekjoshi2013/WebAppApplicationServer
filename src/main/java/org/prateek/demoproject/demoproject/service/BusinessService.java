@@ -16,103 +16,131 @@ public class BusinessService {
 		String queryPart="";
 		System.out.println(searchCriteraString);
 		String stringParts[]=searchCriteraString.split(",");
-
-		for(String s:stringParts){
-			System.out.println(s);
-			if(s.startsWith("radio_attributes.noise"))
-			{
-				String spart[]=s.split("=");
-				if(spart.length>1){
-					queryPart+="ATTRIBUTES_NOISELEVEL = '"+spart[1]+"' and ";
-				}
+if(stringParts.length==5 && stringParts[0].endsWith("=")&& stringParts[1].endsWith("=")&& stringParts[2].endsWith("=")&& stringParts[3].endsWith("=")&& stringParts[4].endsWith("="))
+{
+	String defaultQuery="select * from (select business_id,name,stars from sharshar.business where  city='"+city+"' and CATEGORIES  like '%"+category+"%')where rownum <=11";
+	DriverManager.registerDriver(new oracle.jdbc.driver.OracleDriver());
+	Connection conn = DriverManager.getConnection ("jdbc:oracle:thin:@oracle.cise.ufl.edu:1521:orcl","ntiware", "nikhil123");
+	 Statement stmt = conn.createStatement ();
 
 
-			}
-			else if(s.startsWith("radio_attributes.attire="))
-			{
-				String spart[]=s.split("=");
-				if(spart.length>1){
-					queryPart+="ATTRIBUTES_ATTIRE = '"+spart[1]+"' and ";
-				}
+	 ResultSet rset = stmt.executeQuery (defaultQuery);
+	 List<Business> businessList=new ArrayList<Business>();
 
-			}
-			else if(s.startsWith("radio_attributes.price"))
-			{
-				String spart[]=s.split("=");
-				if(spart.length>1){
-					queryPart+="ATTRIBUTES_PRICERANGE = '"+spart[1]+"' and ";
-				}
+	 while (rset.next ()){
 
-			}
-			else if(s.startsWith("radio_attributes.age"))
-			{
-				String spart[]=s.split("=");
-				if(spart.length>1){
-					queryPart+="ATTRIBUTES_AGESALLOWED = '"+spart[1]+"' and ";
-				}
+		 Business business=new Business(rset.getString("NAME"),rset.getString("BUSINESS_ID"),Float.parseFloat(rset.getString("STARS")));
+		 businessList.add(business);
 
-			}
-			else if(s.startsWith("radio_attributes.wifi"))
-			{
-				String spart[]=s.split("=");
-				if(spart.length>1){
-					queryPart+="ATTRIBUTES_WIFI = '"+spart[1]+"' and ";
-				}
+	 }
 
+
+	 conn.close(); // ** IMPORTANT : Close connections when done **}
+	 return businessList;
+
+}
+else{
+	for(String s:stringParts){
+		System.out.println(s);
+		if(s.startsWith("radio_attributes.noise"))
+		{
+			String spart[]=s.split("=");
+			if(spart.length>1){
+				queryPart+="ATTRIBUTES_NOISELEVEL = '"+spart[1]+"' and ";
 			}
 
-			else
-			{queryPart+=s+"='TRUE' and ";}
 
 		}
-		System.out.println(queryPart.substring(0,queryPart.length()-4));
+		else if(s.startsWith("radio_attributes.attire="))
+		{
+			String spart[]=s.split("=");
+			if(spart.length>1){
+				queryPart+="ATTRIBUTES_ATTIRE = '"+spart[1]+"' and ";
+			}
+
+		}
+		else if(s.startsWith("radio_attributes.price"))
+		{
+			String spart[]=s.split("=");
+			if(spart.length>1){
+				queryPart+="ATTRIBUTES_PRICERANGE = '"+spart[1]+"' and ";
+			}
+
+		}
+		else if(s.startsWith("radio_attributes.age"))
+		{
+			String spart[]=s.split("=");
+			if(spart.length>1){
+				queryPart+="ATTRIBUTES_AGESALLOWED = '"+spart[1]+"' and ";
+			}
+
+		}
+		else if(s.startsWith("radio_attributes.wifi"))
+		{
+			String spart[]=s.split("=");
+			if(spart.length>1){
+				queryPart+="ATTRIBUTES_WIFI = '"+spart[1]+"' and ";
+			}
+
+		}
+
+		else
+		{queryPart+=s+"='TRUE' and ";}
+
+	}
+	System.out.println(queryPart.substring(0,queryPart.length()-4));
 String queryString="select business_id,name,stars from sharshar.business where  city='"+city+"' and CATEGORIES  like '%"+category+"%' and "+ queryPart.substring(0,queryPart.length()-4);
 System.out.println(queryString);
-		DriverManager.registerDriver(new oracle.jdbc.driver.OracleDriver());
-		Connection conn = DriverManager.getConnection ("jdbc:oracle:thin:@oracle.cise.ufl.edu:1521:orcl","ntiware", "nikhil123");
-		 Statement stmt = conn.createStatement ();
+	DriverManager.registerDriver(new oracle.jdbc.driver.OracleDriver());
+	Connection conn = DriverManager.getConnection ("jdbc:oracle:thin:@oracle.cise.ufl.edu:1521:orcl","ntiware", "nikhil123");
+	 Statement stmt = conn.createStatement ();
 
 
-		 ResultSet rset = stmt.executeQuery (queryString);
-		 List<Business> businessList=new ArrayList<Business>();
+	 ResultSet rset = stmt.executeQuery (queryString);
+	 List<Business> businessList=new ArrayList<Business>();
 
-		 while (rset.next ()){
+	 while (rset.next ()){
 
-			 Business business=new Business(rset.getString("NAME"),rset.getString("BUSINESS_ID"),Float.parseFloat(rset.getString("STARS")));
-			 businessList.add(business);
+		 Business business=new Business(rset.getString("NAME"),rset.getString("BUSINESS_ID"),Float.parseFloat(rset.getString("STARS")));
+		 businessList.add(business);
 
-		 }
-
-
-		 conn.close(); // ** IMPORTANT : Close connections when done **}
-		return businessList;
-
-	}
-
-	public List<Business> getTop5Businesses(String city,String category,int review_count) throws SQLException{
-		DriverManager.registerDriver(new oracle.jdbc.driver.OracleDriver());
-		Connection conn = DriverManager.getConnection ("jdbc:oracle:thin:@oracle.cise.ufl.edu:1521:orcl","ntiware", "nikhil123");
-		 Statement stmt = conn.createStatement ();
-		 //String oldQuery = "select name,business_id,stars from(select name,business_id,stars from sharshar.BUSINESS where city='"+city+"' and CATEGORIES  like '%"+category+"%' and REVIEW_COUNT >"+review_count+" order by stars desc)where rownum <6 ";
-		 String query = "select name,business_id,stars from sharshar.business where business_id in (select * from (select a.business_id as review_count from sharshar.business a join aravi.reviews b on a.business_id=b.business_id where a.categories like '%"+category+"%' AND city = '"+city+"' group by a.business_id,a.STARS order by a.stars desc) where ROWNUM<=6) order by stars desc";
-		 ResultSet rset = stmt.executeQuery (query);
-		 List<Business> businessList=new ArrayList<Business>();
-		 if(!rset.next()){
-
-			  rset = stmt.executeQuery ("select name,business_id,stars from(select name,business_id,stars from sharshar.BUSINESS where city='"+city+"' and CATEGORIES  like '%"+category+"%' order by stars desc)where rownum <6 ");
-		 }
-		 while (rset.next ()){
-
-			 Business business=new Business(rset.getString("NAME"),rset.getString("BUSINESS_ID"),Float.parseFloat(rset.getString("STARS")));
-			 businessList.add(business);
-
-		 }
+	 }
 
 
-		 conn.close(); // ** IMPORTANT : Close connections when done **}
-		return businessList;
+	 conn.close(); // ** IMPORTANT : Close connections when done **}
+	return businessList;
+}
+}
 
-	}
+public List<Business> getTop5Businesses(String city,String category,int review_count) throws SQLException{
+	DriverManager.registerDriver(new oracle.jdbc.driver.OracleDriver());
+	Connection conn = DriverManager.getConnection ("jdbc:oracle:thin:@oracle.cise.ufl.edu:1521:orcl","ntiware", "nikhil123");
+	 Statement stmt = conn.createStatement ();
+	 //String oldQuery = "select name,business_id,stars from(select name,business_id,stars from sharshar.BUSINESS where city='"+city+"' and CATEGORIES  like '%"+category+"%' and REVIEW_COUNT >"+review_count+" order by stars desc)where rownum <6 ";
+	 String query = "select name,business_id,stars from sharshar.business where business_id in (select * from (select a.business_id as review_count from sharshar.business a join aravi.reviews b on a.business_id=b.business_id where a.categories like '%"+category+"%' AND city = '"+city+"' group by a.business_id,a.STARS order by a.stars desc) where ROWNUM<=6) order by stars desc";
+	 ResultSet rset = stmt.executeQuery (query);
+	 List<Business> businessList=new ArrayList<Business>();
+	 if(!rset.next()){
+
+		  rset = stmt.executeQuery ("select name,business_id,stars from(select name,business_id,stars from sharshar.BUSINESS where city='"+city+"' and CATEGORIES  like '%"+category+"%' order by stars desc)where rownum <6 ");
+	 }
+	 while (rset.next ()){
+
+		 Business business=new Business(rset.getString("NAME"),rset.getString("BUSINESS_ID"),Float.parseFloat(rset.getString("STARS")));
+		 businessList.add(business);
+
+	 }
+
+
+	 conn.close(); // ** IMPORTANT : Close connections when done **}
+	return businessList;
+
+
+
+}
+
+
+
 	public List<Business> getAllBusinesses(int num) throws SQLException{
 
 		DriverManager.registerDriver(new oracle.jdbc.driver.OracleDriver());
